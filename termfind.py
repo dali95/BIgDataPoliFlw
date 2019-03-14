@@ -35,6 +35,3 @@ def Search(term):
                 if sim > 0.65:
                     terms.append(doc)
     return terms
-
-results = Search(term)
-print(results)

@@ -1,5 +1,3 @@
-__author__ = 'Dennis Strik'
-
 from functools import reduce
 import os
 import glob
