@@ -1,11 +1,5 @@
-from functools import reduce
-import os
-import glob
-import re
-import math
 import ijson
 import re
-from textblob import TextBlob as tb
 
 counter = 0
 
@@ -13,17 +7,6 @@ with open("articles.csv", "w") as my_empty_csv:
   # now you have an empty file already
   pass
 
-def tf(word, blob):
-    return blob.words.count(word) / len(blob.words)
-
-def n_containing(word, bloblist):
-    return sum(1 for blob in bloblist if word in blob.words)
-
-def idf(word, bloblist):
-    return math.log(len(bloblist) / (1 + n_containing(word, bloblist)))
-
-def tfidf(word, blob, bloblist):
-    return tf(word, blob) * idf(word, bloblist)
 
 def replace_all(text, dic):
     for i, j in dic.iteritems():
@@ -32,7 +15,7 @@ def replace_all(text, dic):
 
 stop_words =()
 
-with open("/home/dali/Downloads/stopwoorden.txt", "r") as f:
+with open("stopwoorden.txt", "r") as f:
     i = 0
     tmpList = []
     for line in f:
@@ -175,16 +158,6 @@ for item in ijson.items(f, "item"):
 
 
     print(counter)
-    counter +=1
-
-    # print(art_id)
-    # print(art_title)
-    # print(art_date)
-    # print(art_source)
-    # print(clean_text)
-    #
-    #
-    # print('----------------------------')
 
     clean_text = clean_text.replace('\r', '').replace('\n', '')
     clean_text = clean_text.replace(';', ' ').replace('\t', '')
@@ -201,35 +174,5 @@ for item in ijson.items(f, "item"):
         with open('articles.csv','a', encoding="utf-8") as fd:
             fd.write(art_id + ';' + art_title + ';' + art_date + ';' + art_source + ';' + clean_text + '\n')
 
-    # data = re.sub(r"[^a-zA-Z0-9]+", ' ', clean_text)
-    # #remove special characters
-    #
-    # data = reduce(lambda a, kv: a.replace(*kv), stop_words, data)
-    # data = re.sub(r'[0-9]+', '', data)
 
 
-    # text = tb(data)
-    #
-    # bloblist.append(text)
-
-
-
-
-        # document = tb(test.read())
-        # counter2 = 0
-        # while counter2 <3:
-        #     print(document)
-        #
-        # while counter < 3:
-        #     bloblist.append(document)
-        #     counter +=1
-
-#print(len(blobList))
-
-
-# for i, blob in enumerate(bloblist):
-#     print("Top words in document {}:".format(i + 1))
-#     scores = {word: tfidf(word, blob, bloblist) for word in blob.words}
-#     sorted_words = sorted(scores.items(), key=lambda x: x[1], reverse=True)
-#     for word, score in sorted_words[:10]:
-#         print("\t{}, TF-IDF: {}".format(word, round(score, 5)))

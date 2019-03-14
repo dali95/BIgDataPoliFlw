@@ -13,7 +13,7 @@ connect("BigData_art", host="localhost", port=27017)
 
 db = client.BigData_art
 
-with open("/home/dali/Downloads/stopwoorden.txt", "r") as f:
+with open("stopwoorden.txt", "r") as f:
     i = 0
     tmpList = []
     for line in f:
@@ -47,24 +47,22 @@ for lines in range(1000):
     counts = line.count(';')
     if counts <= 4:
         id, titel, date, author, text = line.split(";")
-        print(line)
         data = re.sub(r"[^a-zA-Z0-9]+", ' ', line)
         #remove special characters
         data = reduce(lambda a, kv: a.replace(*kv), stop_words, data)
         data = re.sub(r'[0-9]+', '', data)
         bloblist.append(tb(data.lower()))
 
-    ak = Artikel()
-    ak.ID = id
-    ak.Title = titel
-    ak.Date = date
-    ak.Source = 'Test'
-    ak.Text = text
-    ak.save
+        ak = Artikel()
+        ak.ID = id
+        ak.Title = titel
+        ak.Date = date
+        ak.Source = 'Test'
+        ak.Text = text
+        ak.save
 
 
-    #Controle of er al een artikel is in de DB met deze id of titel
-    #Hierzo het artikel in de DB gooien nog
+
 
 for i, blob in enumerate(bloblist):
     tmp = []
@@ -73,10 +71,10 @@ for i, blob in enumerate(bloblist):
     for word, score in sorted_words[:5]:
         TF_IDF_str = word + ':' + str(score)
         tmp.append(TF_IDF_str)
-
+        print(TF_IDF_str)
     TI = TF_IDF()
     TI.ID = id
-    title = titel
+    TI.Title = titel
     TI.TF_IDF1 = tmp[0]
     TI.TF_IDF2 = tmp[1]
     TI.TF_IDF3 = tmp[2]

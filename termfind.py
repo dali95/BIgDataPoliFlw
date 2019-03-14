@@ -5,7 +5,7 @@ from models import *
 from pymongo import MongoClient
 
 def similar(a, b):
-    s =  SequenceMatcher(None, a, b)
+    s = SequenceMatcher(None, a, b)
     return s.ratio()
 
 artikel = {}
@@ -23,7 +23,7 @@ term = 'zuiderzee'
 
 
 
-def Search(term):
+def FindTerm(term):
     terms = []
     for doc in tf_idf_collection.find():
         i = 1
@@ -35,3 +35,4 @@ def Search(term):
                 if sim > 0.65:
                     terms.append(doc)
     return terms
+
